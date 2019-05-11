@@ -1,38 +1,57 @@
-import React, { Component } from 'react'
-
-// https://stackoverflow.com/a/12646864/7485031
-const shuffleQuotes = a => {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import React, { Component, Fragment } from 'react'
+import * as axios from 'axios'
+import { shuffleQuotes } from '../helpers/array'
 
 class App extends Component {
   state = {
-    quote: "'Cause we both, coincide, when the world's, wasting time.",
-    author: 'Van McCann',
+    quotes: [],
+    selectedQuote: {},
   }
 
   componentDidMount() {
-    // this.fetchQuotes()
+    axios.get('/api/v1/quotes')
+      .then(({ data: { data } }) => {
+        this.setState(() => {
+          const selectedQuote = shuffleQuotes(data)
+          return { quotes: data, selectedQuote }
+        })
+      })
+  }
+
+  onNewQuoteClick = () => {
+    const { quotes, selectedQuote } = this.state
+    const quotesToBeShuffled = quotes.filter(quote => 
+      quote.attributes.content != selectedQuote.attributes.content
+    )
+
+    this.setState({ selectedQuote: shuffleQuotes(quotesToBeShuffled) })
+  }
+
+  renderContentBody = () => {
+    const { quotes, selectedQuote } = this.state
+    if (quotes.length === 0) {
+      return <p>And then there were zero quotes.</p>
+    }
+
+    return (
+      <Fragment>
+        <p>
+          <span>“</span>
+          <span>{selectedQuote.attributes.content}</span>
+          <span>”</span>
+        </p>
+        <p>{selectedQuote.attributes.originator.data.attributes.name}</p>
+        <button onClick={this.onNewQuoteClick}>New Quote</button>
+      </Fragment>
+    )
   }
 
   render() {
-    const { quote, author } = this.state;
-
     return (
       <div className="container">
         <h1>Thine Quotes</h1>
         <div className="quote-container">
-          <p id="quote">
-            <span>“</span>
-            <span>{quote}</span>
-            <span>”</span>
-          </p>
-          <p id="author">{author}</p>
-          <button onClick={this.onNewQuoteClick}>New Quote</button>
+          {this.renderContentBody()}
         </div>
       </div>
     )
