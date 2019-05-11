@@ -9,6 +9,6 @@ import App from '../components/App'
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <App />,
-    document.querySelector('.container'),
+    document.querySelector('.app-container'),
   )
 })
