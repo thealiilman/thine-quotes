@@ -23,7 +23,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Content Container */
+/* React Container */
+.app-container {
+  display: flex;
+  flex: 1;
+}
+
+/* React Content Container */
 .container {
   display: flex;
   flex: 1;
