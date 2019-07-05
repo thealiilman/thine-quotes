@@ -1,24 +1,29 @@
-# README
+# Thine Quotes
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+These are the instructions for running the app on your machine.  
 
-Things you may want to cover:
+```
+git clone https://github.com/thealiilman/thine-quotes.git
+cd thine-quotes
+```
 
-* Ruby version
+This app is using [yarn](https://github.com/yarnpkg/yarn). Run the following to install JavaScript packages.  
+```
+yarn install --check-files
+```
 
-* System dependencies
+Create and migrate the databases.
+```
+rails db:create
+rails db:migrate
+```
 
-* Configuration
+To seed the database, run the following.
+```
+rails db:seed
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+If you were to play around with the code and it takes ages to compile, run the following.
+```
+bin/webpack-dev-server
+```
